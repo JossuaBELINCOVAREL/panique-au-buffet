@@ -1,0 +1,22 @@
+
+---
+
+## 📄 `.gitignore`
+
+```gitignore
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.db
+.env
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Environnement virtuel
+venv/
+.env/
