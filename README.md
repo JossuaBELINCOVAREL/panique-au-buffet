@@ -24,3 +24,9 @@ Affrontez une IA gourmande dans un buffet chaotique rempli d'aliments aux effets
 git clone https://github.com/JossuaBELINCOVAREL/panique-au-buffet.git
 cd panique-au-buffet
 pip install -r requirements.txt
+```
+
+## 🛠️ Lancement
+```bash
+python app/main.py
+```
