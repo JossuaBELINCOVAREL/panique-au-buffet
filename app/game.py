@@ -34,11 +34,28 @@ class BuffetGame:
             best_card = min(cards, key=lambda c: abs(c["value"]))
             cards.remove(best_card)
             return best_card
+        
+    def apply_card_effect(self, card, opponent_card, current_player):
+        effect = card.get("effect")
+        if not effect:
+            return
+
+        logger.info(f"{current_player} active le pouvoir : {effect}")
+
+        if effect == "double_value":
+            card["value"] *= 2
+        elif effect == "swap_scores":
+            self.player_score, self.ia_score = self.ia_score, self.player_score
+        elif effect == "heal" and current_player == "player":
+            self.player_score += 3
+        elif effect == "reverse_sign":
+            card["value"] *= -1
+
 
     def play_turn(self):
         cards = self.draw_cards()
 
-        logger.info(f"Tour {self.turn} – Cartes tirées : {[card['name'] for card in cards]}") # Log des cartes tirées
+        logger.info(f"Tour {self.turn} – Cartes tirées : {[card['name'] for card in cards]}")  # Log des cartes tirées
 
         print("\nCartes disponibles :")
         for idx, card in enumerate(cards, 1):
@@ -56,19 +73,28 @@ class BuffetGame:
                 print("Entrée invalide. Utilise un chiffre.")
 
         player_card = cards.pop(choice - 1)
-        print(f"Tu as choisi : {player_card['name']} ({player_card['value']:+})")
+        print(f"🧍 Tu as choisi : {player_card['name']} ({player_card['value']:+})")
 
         # L'IA choisit une carte aléatoirement parmi les 2 restantes
         ia_card = cards.pop(random.randint(0, 1))
-        print(f"L'IA a choisi : {ia_card['name']} ({ia_card['value']:+})")
+        print(f"🤖 L'IA a choisi : {ia_card['name']} ({ia_card['value']:+})")
+
+        # 💥 Active les effets spéciaux
+        self.apply_card_effect(player_card, ia_card, current_player="player")
+        self.apply_card_effect(ia_card, player_card, current_player="ai")
+
+        # Mise à jour des scores
+        self.player_score += player_card["value"]
+        self.ia_score += ia_card["value"]
+
+        # print(f"✅ Score actuel — Toi: {self.player_score} | IA: {self.ia_score}")
 
         # La carte restante est remise dans le deck (et re-mélangée)
         self.deck.append(cards[0])  # il reste 1 carte dans `cards`
         random.shuffle(self.deck)
 
-        # Mise à jour des scores
-        self.player_score += player_card["value"]
-        self.ia_score += ia_card["value"]
+        self.turn += 1
+
 
 
     def calculate_score(self, hand):
@@ -82,7 +108,6 @@ class BuffetGame:
                 print("❌ Plus assez de cartes pour continuer.")
                 break
             self.play_turn()
-            self.turn += 1
 
         logger.info(f"Score final joueur : {self.player_score}, IA : {self.ia_score}") # Log du score final
         
@@ -96,7 +121,7 @@ class BuffetGame:
         if player_diff < ia_diff:
             print("🏆 Tu gagnes ! Tu es le roi du buffet 🍽️👑")
         elif player_diff > ia_diff:
-            print("🤖 L'IA gagne ! Elle a mieux géré son assiette...")
+            print("💀 Tu perds... L'IA domine le buffet.")
         else:
             print("🤝 Égalité parfaite ! Vous avez le même appétit !")
         
