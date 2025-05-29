@@ -1,6 +1,15 @@
 # app/game.py
 
 import random
+
+from logger.logger import setup_logger
+logger = setup_logger()
+
+logger.basicConfig(
+    level=logger.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
 from cards import get_deck
 
 class BuffetGame:
@@ -33,6 +42,8 @@ class BuffetGame:
 
     def play_turn(self):
         cards = self.draw_cards()
+
+        logger.info(f"Tour {self.turn} – Cartes tirées : {[card['name'] for card in cards]}") # Log des cartes tirées
 
         print("\nCartes disponibles :")
         for idx, card in enumerate(cards, 1):
@@ -78,6 +89,8 @@ class BuffetGame:
             self.play_turn()
             self.turn += 1
 
+        logger.info(f"Score final joueur : {self.player_score}, IA : {self.ia_score}") # Log du score final
+        
         print("\n🎉 Fin de la partie !")
         print(f"Ton score : {self.player_score}")
         print(f"Score de l'IA : {self.ia_score}")
