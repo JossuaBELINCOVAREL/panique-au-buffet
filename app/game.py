@@ -2,6 +2,8 @@
 
 import random
 
+from app.effects import EFFECT_DESCRIPTIONS
+
 from app.cards import get_deck
 
 from logger.logger import setup_logger
@@ -15,12 +17,24 @@ class BuffetGame:
         self.player_hand = []
         self.ai_hand = []
         self.turn = 1
-        self.starting_player = random.choice(["player", "ai"])
+        # self.starting_player = random.choice(["player", "ai"])
+        self.player_starts = True
 
     def draw_cards(self):
         if len(self.deck) < 3:
             raise ValueError("Plus assez de cartes pour tirer un tour complet.")
         return [self.deck.pop() for _ in range(3)]
+    
+    def get_player_choice(self, cards):
+        while True:
+            try:
+                choice = int(input("Choisis une carte (1-3) : ")) - 1
+                if 0 <= choice < len(cards):
+                    return choice
+                else:
+                    print(f"❌ Choix invalide. Entrer un nombre entre 1 et {len(cards)}.")
+            except ValueError:
+                print("❌ Entrée invalide. Tape un nombre.")
 
     def choose_card(self, cards, player):
         if player == "player":
@@ -55,46 +69,45 @@ class BuffetGame:
     def play_turn(self):
         cards = self.draw_cards()
 
-        logger.info(f"Tour {self.turn} – Cartes tirées : {[card['name'] for card in cards]}")  # Log des cartes tirées
+        logger.info(f"Tour {self.turn} – Cartes tirées : {[card['name'] for card in cards]}")
 
         print("\nCartes disponibles :")
         for idx, card in enumerate(cards, 1):
-            print(f"{idx}. {card['name']} ({card['value']:+})")
+            effect = card.get("effect")
+            effect_str = f" — Effet : {EFFECT_DESCRIPTIONS.get(effect)}" if effect else ""
+            print(f"{idx}. {card['name']} ({card['value']:+}){effect_str}")
 
-        # Le joueur choisit une carte
-        while True:
-            try:
-                choice = int(input("Choisis une carte (1-3) : "))
-                if 1 <= choice <= 3:
-                    break
-                else:
-                    print("Choix invalide. Entrer un nombre entre 1 et 3.")
-            except ValueError:
-                print("Entrée invalide. Utilise un chiffre.")
+        # Choix selon qui commence
+        if self.player_starts:
+            choice = self.get_player_choice(cards)
+            player_card = cards[choice]
+            # Crée une liste sans la carte choisie
+            remaining = [card for i, card in enumerate(cards) if i != choice]
+            ia_card = self.choose_card(remaining, player="ai")
+        else:
+            ia_card = self.choose_card(cards.copy(), player="ai")
+            # Supprime la carte de l'IA
+            cards.remove(ia_card)
+            choice = self.get_player_choice(cards)
+            player_card = cards[choice]
 
-        player_card = cards.pop(choice - 1)
         print(f"🧍 Tu as choisi : {player_card['name']} ({player_card['value']:+})")
-
-        # L'IA choisit une carte aléatoirement parmi les 2 restantes
-        ia_card = cards.pop(random.randint(0, 1))
         print(f"🤖 L'IA a choisi : {ia_card['name']} ({ia_card['value']:+})")
 
-        # 💥 Active les effets spéciaux
         self.apply_card_effect(player_card, ia_card, current_player="player")
         self.apply_card_effect(ia_card, player_card, current_player="ai")
 
-        # Mise à jour des scores
         self.player_score += player_card["value"]
         self.ia_score += ia_card["value"]
 
-        # print(f"✅ Score actuel — Toi: {self.player_score} | IA: {self.ia_score}")
-
-        # La carte restante est remise dans le deck (et re-mélangée)
-        self.deck.append(cards[0])  # il reste 1 carte dans `cards`
-        random.shuffle(self.deck)
-
+        self.player_starts = not self.player_starts
         self.turn += 1
 
+        # Replace la carte restante (si encore une)
+        leftover = [card for card in cards if card not in (player_card, ia_card)]
+        if leftover:
+            self.deck.append(leftover[0])
+            random.shuffle(self.deck)
 
 
     def calculate_score(self, hand):
