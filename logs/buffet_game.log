@@ -23,3 +23,12 @@
 2025-05-29 11:44:26,045 - INFO - Tour 6 – Cartes tirées : ['Tarte Trop Acide', 'Champignon Farceur', 'Nuggets Trop Cuits']
 2025-05-29 11:44:26,633 - INFO - Tour 7 – Cartes tirées : ['Burger Brûlé', 'Pain Élastique', 'Tacos Surprise']
 2025-05-29 11:44:27,345 - INFO - Score final joueur : -4, IA : -7
+2025-05-29 11:52:53,335 - INFO - Tour 1 – Cartes tirées : ['Fromage Miroir', 'Pain Élastique', 'Gâteau Vide']
+2025-05-29 11:54:29,024 - INFO - Tour 1 – Cartes tirées : ['Cookie Mutant', 'Fromage Miroir', 'Pizza Gluante']
+2025-05-29 11:54:29,025 - INFO - Tour 2 – Cartes tirées : ['Glace Fantôme', 'Pâtes Trop Salées', 'Salade Explosive']
+2025-05-29 11:54:29,025 - INFO - Tour 3 – Cartes tirées : ['Brochette Cramée', 'Biscuit Molletonné', 'Soupe Disparue']
+2025-05-29 11:54:29,025 - INFO - Tour 4 – Cartes tirées : ['Tarte Trop Acide', 'Bonbon Acidulé', 'Fromage Miroir']
+2025-05-29 11:54:29,026 - INFO - Tour 5 – Cartes tirées : ['Frites Friables', 'Chili Glacé', 'Nuggets Trop Cuits']
+2025-05-29 11:54:29,026 - INFO - Tour 6 – Cartes tirées : ['Boulettes Rebelles', 'Yaourt Hystérique', 'Compote Volante']
+2025-05-29 11:54:29,027 - INFO - Tour 7 – Cartes tirées : ['Gâteau Vide', 'Bonbon Acidulé', 'Compote Volante']
+2025-05-29 11:54:29,027 - INFO - Score final joueur : 1, IA : 5
