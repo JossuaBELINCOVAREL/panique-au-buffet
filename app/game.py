@@ -25,16 +25,25 @@ class BuffetGame:
             raise ValueError("Plus assez de cartes pour tirer un tour complet.")
         return [self.deck.pop() for _ in range(3)]
     
-    def get_player_choice(self, cards):
+    def get_player_choice(self, cards, taken_indices=[]):
         while True:
             try:
                 choice = int(input("Choisis une carte (1-3) : ")) - 1
-                if 0 <= choice < len(cards):
+                if choice in taken_indices:
+                    print("❌ Ce plat a déjà été pris !")
+                    print("Cartes encore disponibles :")
+                    for idx, card in enumerate(cards):
+                        if idx not in taken_indices:
+                            effect = card.get("effect")
+                            effect_str = f" — Effet : {EFFECT_DESCRIPTIONS.get(effect)}" if effect else ""
+                            print(f"{idx + 1}. {card['name']} ({card['value']:+}){effect_str}")
+                elif 0 <= choice < len(cards):
                     return choice
                 else:
                     print(f"❌ Choix invalide. Entrer un nombre entre 1 et {len(cards)}.")
             except ValueError:
                 print("❌ Entrée invalide. Tape un nombre.")
+
 
     def choose_card(self, cards, player):
         if player == "player":
@@ -77,19 +86,20 @@ class BuffetGame:
             effect_str = f" — Effet : {EFFECT_DESCRIPTIONS.get(effect)}" if effect else ""
             print(f"{idx}. {card['name']} ({card['value']:+}){effect_str}")
 
-        # Choix selon qui commence
         if self.player_starts:
-            choice = self.get_player_choice(cards)
-            player_card = cards[choice]
-            # Crée une liste sans la carte choisie
-            remaining = [card for i, card in enumerate(cards) if i != choice]
-            ia_card = self.choose_card(remaining, player="ai")
+            player_choice = self.get_player_choice(cards)
+            player_card = cards[player_choice]
+            # IA choisit parmi les autres
+            ia_candidates = [i for i in range(len(cards)) if i != player_choice]
+            ia_choice = min(ia_candidates, key=lambda i: abs(cards[i]["value"]))
+            ia_card = cards[ia_choice]
         else:
-            ia_card = self.choose_card(cards.copy(), player="ai")
-            # Supprime la carte de l'IA
-            cards.remove(ia_card)
-            choice = self.get_player_choice(cards)
-            player_card = cards[choice]
+            # IA choisit d’abord
+            ia_choice = min(range(len(cards)), key=lambda i: abs(cards[i]["value"]))
+            ia_card = cards[ia_choice]
+            # Joueur choisit ensuite
+            player_choice = self.get_player_choice(cards, taken_indices=[ia_choice])
+            player_card = cards[player_choice]
 
         print(f"🧍 Tu as choisi : {player_card['name']} ({player_card['value']:+})")
         print(f"🤖 L'IA a choisi : {ia_card['name']} ({ia_card['value']:+})")
@@ -103,11 +113,13 @@ class BuffetGame:
         self.player_starts = not self.player_starts
         self.turn += 1
 
-        # Replace la carte restante (si encore une)
-        leftover = [card for card in cards if card not in (player_card, ia_card)]
-        if leftover:
-            self.deck.append(leftover[0])
-            random.shuffle(self.deck)
+        # Replace la carte restante
+        for i in range(len(cards)):
+            if i not in (player_choice, ia_choice):
+                self.deck.append(cards[i])
+                break
+        random.shuffle(self.deck)
+
 
 
     def calculate_score(self, hand):

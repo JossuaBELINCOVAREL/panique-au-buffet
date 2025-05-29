@@ -142,3 +142,28 @@
 2025-05-29 12:54:09,637 - INFO - Tour 7 – Cartes tirées : ['Salade Explosive', 'Cookie Mutant', 'Boulettes Rebelles']
 2025-05-29 12:54:10,149 - INFO - player active le pouvoir : reverse_sign
 2025-05-29 12:54:10,149 - INFO - Score final joueur : 7, IA : 6
+2025-05-29 12:57:38,318 - INFO - Tour 1 – Cartes tirées : ['Boulettes Rebelles', 'Sesame Molletonné', 'Brochette Cramée']
+2025-05-29 12:57:40,828 - INFO - ai active le pouvoir : swap_scores
+2025-05-29 12:57:40,828 - INFO - Tour 2 – Cartes tirées : ['Champignon Farceur', 'Pad Thai Acidulé', 'Thiakry Vide']
+2025-05-29 12:57:47,989 - INFO - player active le pouvoir : swap_scores
+2025-05-29 12:57:47,989 - INFO - Tour 3 – Cartes tirées : ['Glace Fantôme', 'Pizza Gluante', 'Cookie Mutant']
+2025-05-29 12:57:59,968 - INFO - player active le pouvoir : heal
+2025-05-29 12:57:59,968 - INFO - Tour 4 – Cartes tirées : ['Tarte Trop Acide', 'Pad Thai Acidulé', 'Frites Friables']
+2025-05-29 12:58:01,939 - INFO - Tour 5 – Cartes tirées : ['Riz Collant', 'Pain Élastique', 'Pad Thai Acidulé']
+2025-05-29 12:58:03,000 - INFO - player active le pouvoir : double_value
+2025-05-29 12:58:03,000 - INFO - Tour 6 – Cartes tirées : ['Nuggets Trop Cuits', 'Soupe Disparue', 'Cookie Mutant']
+2025-05-29 12:58:03,788 - INFO - Tour 7 – Cartes tirées : ['Fromage Miroir', 'Tacos Surprise', 'Yaourt Hystérique']
+2025-05-29 12:58:04,650 - INFO - player active le pouvoir : double_value
+2025-05-29 12:58:04,650 - INFO - Score final joueur : 8, IA : -8
+2025-05-29 12:58:08,990 - INFO - Tour 1 – Cartes tirées : ['Zebu Volant', 'Pad Thai Acidulé', 'Tarte Trop Acide']
+2025-05-29 12:58:09,880 - INFO - ai active le pouvoir : heal
+2025-05-29 12:58:09,880 - INFO - Tour 2 – Cartes tirées : ['Tacos Surprise', 'Thiakry Vide', 'Pain Élastique']
+2025-05-29 12:58:10,468 - INFO - player active le pouvoir : double_value
+2025-05-29 12:58:10,468 - INFO - Tour 3 – Cartes tirées : ['Fromage Miroir', 'Sesame Molletonné', 'Sushi Moisi']
+2025-05-29 12:58:12,208 - INFO - Tour 4 – Cartes tirées : ['Boulettes Rebelles', 'Yaourt Hystérique', 'Soupe Disparue']
+2025-05-29 12:58:12,908 - INFO - Tour 5 – Cartes tirées : ['Riz Collant', 'Salade Explosive', 'Brochette Cramée']
+2025-05-29 12:58:13,608 - INFO - Tour 6 – Cartes tirées : ['Tacos Surprise', 'Pad Thai Acidulé', 'Nuggets Trop Cuits']
+2025-05-29 12:58:16,758 - INFO - player active le pouvoir : double_value
+2025-05-29 12:58:16,758 - INFO - Tour 7 – Cartes tirées : ['Hot-Dog Piquant', 'Pâtes Trop Salées', 'Boulettes Rebelles']
+2025-05-29 12:58:21,264 - INFO - ai active le pouvoir : swap_scores
+2025-05-29 12:58:21,264 - INFO - Score final joueur : 2, IA : -14
