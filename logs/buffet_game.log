@@ -167,3 +167,22 @@
 2025-05-29 12:58:16,758 - INFO - Tour 7 – Cartes tirées : ['Hot-Dog Piquant', 'Pâtes Trop Salées', 'Boulettes Rebelles']
 2025-05-29 12:58:21,264 - INFO - ai active le pouvoir : swap_scores
 2025-05-29 12:58:21,264 - INFO - Score final joueur : 2, IA : -14
+2025-05-29 12:58:56,111 - INFO - player active le pouvoir : double_value
+2025-05-29 12:58:56,113 - INFO - player active le pouvoir : swap_scores
+2025-05-29 12:58:56,114 - INFO - player active le pouvoir : heal
+2025-05-29 12:58:56,120 - INFO - Tour 1 – Cartes tirées : ['Frites Friables', 'Hot-Dog Piquant', 'Glace Fantôme']
+2025-05-29 12:58:56,120 - INFO - ai active le pouvoir : heal
+2025-05-29 12:58:56,120 - INFO - Tour 2 – Cartes tirées : ['Sushi Moisi', 'Chili Glacé', 'Fromage Miroir']
+2025-05-29 12:58:56,120 - INFO - Tour 3 – Cartes tirées : ['Cookie Mutant', 'Pad Thai Acidulé', 'Nuggets Trop Cuits']
+2025-05-29 12:58:56,121 - INFO - Tour 4 – Cartes tirées : ['Pad Thai Acidulé', 'Thiakry Vide', 'Zebu Volant']
+2025-05-29 12:58:56,121 - INFO - player active le pouvoir : double_value
+2025-05-29 12:58:56,121 - INFO - Tour 5 – Cartes tirées : ['Burger Brûlé', 'Champignon Farceur', 'Zebu Volant']
+2025-05-29 12:58:56,121 - INFO - player active le pouvoir : reverse_sign
+2025-05-29 12:58:56,121 - INFO - ai active le pouvoir : heal
+2025-05-29 12:58:56,122 - INFO - Tour 6 – Cartes tirées : ['Yaourt Hystérique', 'Pâtes Trop Salées', 'Champignon Farceur']
+2025-05-29 12:59:29,188 - INFO - player active le pouvoir : double_value
+2025-05-29 12:59:29,188 - INFO - player active le pouvoir : swap_scores
+2025-05-29 12:59:29,192 - INFO - player active le pouvoir : heal
+2025-05-29 12:59:29,196 - INFO - Tour 1 – Cartes tirées : ['Zebu Volant', 'Chili Glacé', 'Sesame Molletonné']
+2025-05-29 12:59:29,197 - INFO - player active le pouvoir : heal
+2025-05-29 12:59:29,197 - INFO - Tour 2 – Cartes tirées : ['Fromage Miroir', 'Sushi Moisi', 'Pizza Gluante']
