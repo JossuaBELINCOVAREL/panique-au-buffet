@@ -22,7 +22,10 @@ def setup_logger(name: str = "buffet_logger") -> logging.Logger:
 
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
-    logger.addHandler(handler)
+
+    if not logger.handlers:
+        logger.addHandler(handler)
+
     logger.propagate = False  # Évite les doublons si logger global existe déjà
 
     return logger

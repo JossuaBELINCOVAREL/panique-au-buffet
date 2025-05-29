@@ -2,15 +2,10 @@
 
 import random
 
+from app.cards import get_deck
+
 from logger.logger import setup_logger
 logger = setup_logger()
-
-logger.basicConfig(
-    level=logger.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-
-from cards import get_deck
 
 class BuffetGame:
     def __init__(self):
