@@ -19,11 +19,19 @@ class BuffetGame:
         self.turn = 1
         # self.starting_player = random.choice(["player", "ai"])
         self.player_starts = True
+        self.current_cards = []  # Cartes tirées ce tour
 
     def draw_cards(self):
         if len(self.deck) < 3:
             raise ValueError("Plus assez de cartes pour tirer un tour complet.")
         return [self.deck.pop() for _ in range(3)]
+    
+    def draw_cards(self):
+        if len(self.deck) < 3:
+            raise ValueError("Plus assez de cartes pour tirer un tour complet.")
+        drawn = [self.deck.pop() for _ in range(3)]
+        self.current_cards = drawn  # 🔥 On mémorise les 3 cartes du tour
+        return drawn
     
     def get_player_choice(self, cards, taken_indices=[]):
         while True:
