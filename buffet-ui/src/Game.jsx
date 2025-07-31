@@ -1,92 +1,63 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { startGame, playTurn } from "./api";
+import "./App.css";
 
-export default function Game() {
+function App() {
   const [gameId, setGameId] = useState(null);
   const [availableCards, setAvailableCards] = useState([]);
   const [playerScore, setPlayerScore] = useState(0);
   const [iaScore, setIaScore] = useState(0);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
 
-  const handleStart = async () => {
-    setError("");
-    try {
-      const res = await startGame();
-      setGameId(res.game_id);
-      setAvailableCards(res.available_cards);
-      setPlayerScore(res.player_score);
-      setIaScore(res.ia_score);
-      setMessage("");
-    } catch (err) {
-      setError(err.message);
-    }
-  };
+  useEffect(() => {
+    handleStartGame();
+  }, []);
 
-  const handlePlay = async (index) => {
-    setError("");
-    try {
-      const res = await playTurn(gameId, index);
-      setAvailableCards(res.available_cards || []); // peut être vide si fin du deck
-      setPlayerScore(res.player_score);
-      setIaScore(res.ia_score);
-      setMessage(res.message || "");
-    } catch (err) {
-      setError(err.message);
-    }
-  };
+  async function handleStartGame() {
+    const data = await startGame();
+    setGameId(data.game_id);
+    setAvailableCards(data.available_cards);
+    setPlayerScore(data.player_score);
+    setIaScore(data.ia_score);
+    setMessage("");
+  }
+
+  async function handleCardClick(index) {
+    const result = await playTurn(gameId, index);
+    setPlayerScore(result.player_score);
+    setIaScore(result.ia_score);
+    setAvailableCards(result.available_cards);
+    setMessage(result.message);
+  }
 
   return (
-    <div style={{ padding: 20, fontFamily: "Arial" }}>
-      <h1>🎮 Panique au Buffet</h1>
+    <div className="container">
+      <h1>Panique au Buffet 🎉</h1>
 
-      {!gameId && (
-        <button onClick={handleStart} style={{ padding: "10px 20px", fontSize: 16 }}>
-          Démarrer une partie
-        </button>
-      )}
+      <div className="scores">
+        <p>👤 Joueur : {playerScore} pts</p>
+        <p>🤖 IA : {iaScore} pts</p>
+      </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      {gameId && (
-        <>
-          <div style={{ marginBottom: 10 }}>
-            <strong>Score Joueur :</strong> {playerScore} |{" "}
-            <strong>Score IA :</strong> {iaScore}
+      <div className="cards">
+        {availableCards.map((card, index) => (
+          <div key={index} className="card" onClick={() => handleCardClick(index)}>
+            {/* Remplace "img" par une vraie image plus tard */}
+            <img src={`/images/${card.image}`} alt={card.name} onError={(e) => e.target.style.display = 'none'} />
+            <h3>{card.name}</h3>
+            <p>Valeur : {card.value}</p>
+            {card.effect && <p>Effet : {card.effect}</p>}
           </div>
+        ))}
+      </div>
 
-          <h2>Choisis une carte :</h2>
-          <div style={{ display: "flex", gap: 10 }}>
-            {availableCards.map((card, index) => (
-              <button
-                key={index}
-                onClick={() => handlePlay(index)}
-                style={{
-                  padding: 10,
-                  width: 180,
-                  border: "1px solid #ccc",
-                  borderRadius: 6,
-                  cursor: "pointer",
-                  background: "#f9f9f9",
-                }}
-              >
-                <div><strong>{card.name}</strong></div>
-                <div>Valeur : {card.value}</div>
-                {card.effect && <div>Effet : {card.effect}</div>}
-              </button>
-            ))}
-          </div>
+      {message && <p style={{ textAlign: "center" }}>{message}</p>}
 
-          {message && <p style={{ marginTop: 20 }}>{message}</p>}
-
-          <button
-            onClick={handleStart}
-            style={{ marginTop: 20, padding: "6px 16px", fontSize: 14 }}
-          >
-            🔄 Rejouer
-          </button>
-        </>
-      )}
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <button onClick={handleStartGame}>🔄 Nouvelle Partie</button>
+      </div>
     </div>
   );
 }
+
+export default App;

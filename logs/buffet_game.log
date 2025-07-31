@@ -1,4 +1,11 @@
-2025-07-31 23:41:01,969 - INFO - player active le pouvoir : reverse_sign
-2025-07-31 23:44:11,997 - INFO - ai active le pouvoir : heal
-2025-07-31 23:55:32,207 - INFO - player active le pouvoir : double_value
-2025-07-31 23:55:32,207 - INFO - ai active le pouvoir : double_value
+2025-08-01 01:06:20,716 - INFO - player active le pouvoir : double_value
+2025-08-01 01:06:20,717 - INFO - ai active le pouvoir : heal
+2025-08-01 01:06:23,207 - INFO - player active le pouvoir : double_value
+2025-08-01 01:06:23,207 - INFO - ai active le pouvoir : heal
+2025-08-01 01:06:24,399 - INFO - ai active le pouvoir : double_value
+2025-08-01 01:06:25,075 - INFO - player active le pouvoir : reverse_sign
+2025-08-01 01:06:25,807 - INFO - player active le pouvoir : swap_scores
+2025-08-01 01:06:26,706 - INFO - player active le pouvoir : reverse_sign
+2025-08-01 01:06:26,706 - INFO - ai active le pouvoir : double_value
+2025-08-01 01:06:32,706 - INFO - ai active le pouvoir : swap_scores
+2025-08-01 01:06:33,115 - INFO - player active le pouvoir : double_value
