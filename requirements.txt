@@ -1,3 +1,8 @@
-flask
-flask-cors
-pytest
+fastapi==0.95.1
+uvicorn[standard]==0.22.0
+pydantic==1.10.11
+
+# Tests
+pytest==7.4.2
+httpx==0.24.1
+pytest-asyncio==0.21.0
