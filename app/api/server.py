@@ -34,44 +34,77 @@ def get_hand():
 
 @app.route("/play-turn", methods=["POST"])
 def play_turn():
-    if not game_instance:
-        return jsonify({"error": "Aucune partie en cours."}), 400
+    if "deck" not in session or "hand" not in session:
+        return jsonify({"error": "Session invalide"}), 400
 
-    data = request.json
-    chosen_name = data.get("card_name")
-    cards = session.get("cards")
+    data = request.get_json()
+    card_name = data.get("card_name")
 
-    if not cards or not chosen_name:
-        return jsonify({"error": "Carte manquante ou session invalide"}), 400
+    if not card_name:
+        return jsonify({"error": "Nom de carte manquant"}), 400
 
-    # Trouver la carte du joueur
-    player_card = next((c for c in cards if c["name"] == chosen_name), None)
-    if not player_card:
-        return jsonify({"error": "Carte non trouvée"}), 400
-    cards.remove(player_card)
+    # Cherche la carte dans la main en fonction du nom
+    hand = session["hand"]
+    selected_card = next((card for card in hand if card["name"] == card_name), None)
 
-    # IA choisit une autre carte parmi celles restantes
-    ia_card = game_instance.choose_card(cards, player="ai")
-    cards.remove(ia_card)
-    remaining_card = cards[0]
+    if not selected_card:
+        return jsonify({"error": "Carte non trouvée dans la main"}), 400
 
-    # Appliquer les effets si nécessaire
-    game_instance.apply_card_effect(player_card, ia_card, current_player="player")
-    game_instance.apply_card_effect(ia_card, player_card, current_player="ai")
+    # Retirer la carte jouée de la main
+    hand.remove(selected_card)
+    session["hand"] = hand
 
-    game_instance.player_score += player_card["value"]
-    game_instance.ia_score += ia_card["value"]
-    game_instance.turn += 1
-    game_instance.player_starts = not game_instance.player_starts
+    # Appliquer l'effet de la carte
+    player_score = session.get("player_score", 0)
+    ia_score = session.get("ia_score", 0)
+
+    effect = selected_card.get("effect")
+    value = selected_card.get("value", 0)
+
+    if effect == "double_value":
+        player_score += value * 2
+    elif effect == "reverse_sign":
+        player_score -= value
+    elif effect == "swap_scores":
+        player_score, ia_score = ia_score, player_score
+    elif effect == "heal":
+        player_score += 2  # ou une autre logique
+    else:
+        player_score += value
+
+    # IA joue une carte au hasard
+    deck = session["deck"]
+    if deck:
+        ia_card = deck.pop()
+        ia_value = ia_card.get("value", 0)
+        ia_effect = ia_card.get("effect")
+
+        if ia_effect == "double_value":
+            ia_score += ia_value * 2
+        elif ia_effect == "reverse_sign":
+            ia_score -= ia_value
+        elif ia_effect == "swap_scores":
+            ia_score, player_score = player_score, ia_score
+        elif ia_effect == "heal":
+            ia_score += 2
+        else:
+            ia_score += ia_value
+    else:
+        ia_card = None
+
+    # Met à jour les données de session
+    session["deck"] = deck
+    session["player_score"] = player_score
+    session["ia_score"] = ia_score
+    session["turn"] = session.get("turn", 1) + 1
 
     return jsonify({
-        "turn": game_instance.turn,
-        "player_card": player_card,
+        "message": f"Carte jouée : {card_name}",
+        "player_score": player_score,
+        "ia_score": ia_score,
+        "turn": session["turn"],
         "ia_card": ia_card,
-        "remaining_card": remaining_card,
-        "player_score": game_instance.player_score,
-        "ia_score": game_instance.ia_score,
-        "game_over": game_instance.turn > 7
+        "remaining_hand": session["hand"]
     })
 
 if __name__ == "__main__":
