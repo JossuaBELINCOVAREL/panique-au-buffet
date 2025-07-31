@@ -4,9 +4,17 @@ from typing import List, Optional
 import uuid
 import random
 
+from fastapi.middleware.cors import CORSMiddleware
 from app.game import BuffetGame  # Assure-toi que BuffetGame est bien importé depuis app/game.py
 
 app = FastAPI(title="Panique au Buffet - API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Stockage des parties en mémoire (simple dict pour dev/local)
 games = {}
@@ -38,6 +46,7 @@ class PlayTurnResponse(BaseModel):
     ia_score: int
     remaining_deck_size: int
     message: Optional[str] = None
+    available_cards: Optional[List[Card]] = None
 
 # -------------------------
 # Routes
@@ -93,6 +102,15 @@ def play_turn(request: PlayTurnRequest):
         random.shuffle(game.deck)
 
     message = f"Tu as joué {player_card['name']} ({player_card['value']}), IA a joué {ai_card['name']} ({ai_card['value']})"
+    
+    # Tirer la nouvelle main (3 cartes) si possible, sinon moins
+    try:
+        next_cards = game.draw_cards()
+    except ValueError:
+        next_cards = []  # plus assez de cartes
+
+    # Convertir les cartes en dict (si tes cartes sont des objets)
+    available_cards_dicts = [card.to_dict() if hasattr(card, "to_dict") else card for card in next_cards]
 
     return PlayTurnResponse(
         player_card=player_card,
@@ -100,5 +118,8 @@ def play_turn(request: PlayTurnRequest):
         player_score=game.player_score,
         ia_score=game.ia_score,
         remaining_deck_size=len(game.deck),
-        message=message
+        message=message,
+        available_cards=available_cards_dicts,
     )
+
+
